@@ -20,7 +20,7 @@ from .functions import *
 MAIN_DIR = os.path.dirname(__file__)
 CONFIG_PATH = os.path.join(MAIN_DIR, '../config/config.ini')
 LOG_PATH = os.path.join(MAIN_DIR, '../logs/kindle-daily-sale.log')
-URL = 'https://www.amazon.co.jp/kdd'
+URL = 'https://www.amazon.co.jp/kindledd'
 
 
 logger = getLogger(__name__)
@@ -43,11 +43,10 @@ def main():
     config_ini.read(CONFIG_PATH, encoding='utf-8')
 
     soup = BeautifulSoup(response.content, 'html.parser')
-    soup = soup.find('div', id='ebooks-deals-storefront-0')
-    tags = soup.findAll('img', class_ = 'a-dynamic-image product-image')
+    tags = soup.findAll('img', class_ = 'a-dynamic-image')
 
     for tag in tags:
-        title = tag.get('alt')
+        title = tag.get('aria-label')
         image_url = tag.get('src')
 
         img_read = urllib.request.urlopen(image_url).read()
